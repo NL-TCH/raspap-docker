@@ -80,4 +80,7 @@ def kernelVersion():
 
 def rpiRevision():
     output = subprocess.run("grep Revision /proc/cpuinfo | awk '{print $3}'", shell=True, capture_output=True, text=True).stdout.strip()
-    return revisions[output]
+    try:
+        return revisions[output]
+    except KeyError:
+        return 'Unknown Device'
