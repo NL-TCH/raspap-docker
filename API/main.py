@@ -23,6 +23,10 @@ async def get_system():
 'rpiRevision': system.rpiRevision()
 }
 
-@app.post("/restart")
+@app.post("/restart/webgui")
 async def restart():
-    restart.restart()
+    restart.webgui()
+
+@app.post("/restart/adblock")
+async def restart():
+    restart.adblock()
