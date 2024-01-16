@@ -9,4 +9,6 @@ RUN python3 -m pip install -r /home/API/requirements.txt --break-system-packages
 COPY firewall-rules.sh /home/firewall-rules.sh
 RUN chmod +x /home/firewall-rules.sh
 
+EXPOSE 8081
+
 CMD [ "/bin/bash", "-c", "/home/firewall-rules.sh && /lib/systemd/systemd" ]

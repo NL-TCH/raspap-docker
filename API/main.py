@@ -20,7 +20,7 @@ async def get_system():
 'hostapdStatus': system.hostapdStatus(),
 'operatingSystem': system.operatingSystem(),
 'kernelVersion': system.kernelVersion(),
-'rpiRevision': 'WIP'
+'rpiRevision': system.rpiRevision()
 }
 
 @app.post("/restart")
