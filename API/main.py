@@ -6,6 +6,7 @@ import json
 import system
 import networking
 import ap
+import dns
 import restart
 
 app = FastAPI()
@@ -48,12 +49,23 @@ async def get_ap():
 'ignore_broadcast_ssid': ap.ignore_broadcast_ssid()
 }
 
-
 @app.get("/networking")
 async def get_networking():
     return{
 'interfaces': json.loads(networking.interfaces()),
 'throughput': json.loads(networking.throughput())
+}
+
+@app.get("/dns/domains")
+async def getdomains():
+    return{
+'domains': json.loads(dns.adblockdomains())
+}
+
+@app.get("/dns/hostnames")
+async def gethostnames():
+    return{
+'hostnames': json.loads(dns.adblockhostnames())
 }
 
 @app.post("/restart/webgui")
