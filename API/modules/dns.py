@@ -21,4 +21,16 @@ def adblockhostnames():
         hostnamelist.append(hostname.replace('0.0.0.0 ',''))
     return hostnamelist
 
-print(adblockhostnames())
+def dnsmasq_logs():
+    output = subprocess.run("cat /var/log/dnsmasq.log", shell=True, capture_output=True, text=True).stdout.strip()
+    log_entries = []
+    for line in output.split("\n"):
+        fields = line.split(" ")
+        log_dict = {
+                'timestamp': ' '.join(fields[:3]),
+                'process': fields[3][:-1],  # Remove the trailing colon
+                'message': ' '.join(fields[4:]),
+            }
+        log_entries.append(log_dict)
+    return log_entries
+
