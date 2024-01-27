@@ -1,8 +1,7 @@
 import subprocess
 
 def client_configs():
-    #minus one bc of the link to client.conf
-    return subprocess.run("echo $(( $(ls /etc/openvpn/client/ | wc -l) - 1 ))", shell=True, capture_output=True, text=True).stdout.strip()
+    return subprocess.run("find /etc/openvpn/client/ -type f | wc -l", shell=True, capture_output=True, text=True).stdout.strip()
 
 def client_config_names():
     config_names_list = []
@@ -19,10 +18,5 @@ def client_config_active():
     return(active_config[1])
 
 def client_config_list(client_config):
-    print(client_config)
     output = subprocess.run(f"cat /etc/openvpn/client/{client_config}", shell=True, capture_output=True, text=True).stdout.strip()
     return output
-
-print(client_config_names())
-print(client_config_active())
-print(client_config_list(client_config_active()))
