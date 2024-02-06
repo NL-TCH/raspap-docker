@@ -1,5 +1,6 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 from fastapi.security.api_key import APIKey
+import auth
 
 import json
 
@@ -74,85 +75,57 @@ async def get_ap():
 'ignore_broadcast_ssid': ap.ignore_broadcast_ssid()
 }
 
-@app.post("/ap/driver", tags=["accesspoint/hostpost"])
-async def post_ap_driver(driver: str):
-    ap.set_driver(driver)
-    return {'driver': driver}
-
-@app.post("/ap/ctrl_interface", tags=["accesspoint/hostpost"])
-async def post_ap_ctrl_interface(ctrl_interface: str):
-    ap.set_ctrl_interface(ctrl_interface)
-    return {'ctrl_interface': ctrl_interface}
-
-@app.post("/ap/ctrl_interface_group", tags=["accesspoint/hostpost"])
-async def post_ap_ctrl_interface_group(ctrl_interface_group: str):
-    ap.set_ctrl_interface_group(ctrl_interface_group)
-    return {'ctrl_interface_group': ctrl_interface_group}
-
-@app.post("/ap/auth_algs", tags=["accesspoint/hostpost"])
-async def post_ap_auth_algs(auth_algs: str):
-    ap.set_auth_algs(auth_algs)
-    return {'auth_algs': auth_algs}
-
-@app.post("/ap/wpa_key_mgmt", tags=["accesspoint/hostpost"])
-async def post_ap_wpa_key_mgmt(wpa_key_mgmt: str):
-    ap.set_wpa_key_mgmt(wpa_key_mgmt)
-    return {'wpa_key_mgmt': wpa_key_mgmt}
-
-@app.post("/ap/beacon_int", tags=["accesspoint/hostpost"])
-async def post_ap_beacon_int(beacon_int: str):
-    ap.set_beacon_int(beacon_int)
-    return {'beacon_int': beacon_int}
-
-@app.post("/ap/ssid", tags=["accesspoint/hostpost"])
-async def post_ap_ssid(ssid: str):
-    ap.set_ssid(ssid)
-    return {'ssid': ssid}
-
-@app.post("/ap/channel", tags=["accesspoint/hostpost"])
-async def post_ap_channel(channel: str):
-    ap.set_channel(channel)
-    return {'channel': channel}
-
-@app.post("/ap/hw_mode", tags=["accesspoint/hostpost"])
-async def post_ap_hw_mode(hw_mode: str):
-    ap.set_hw_mode(hw_mode)
-    return {'hw_mode': hw_mode}
-
-@app.post("/ap/ieee80211n", tags=["accesspoint/hostpost"])
-async def post_ap_ieee80211n(ieee80211n: str):
-    ap.set_ieee80211n(ieee80211n)
-    return {'ieee80211n': ieee80211n}
-
-@app.post("/ap/wpa_passphrase", tags=["accesspoint/hostpost"])
-async def post_ap_wpa_passphrase(wpa_passphrase: str):
-    ap.set_wpa_passphrase(wpa_passphrase)
-    return {'wpa_passphrase': wpa_passphrase}
-
-@app.post("/ap/interface", tags=["accesspoint/hostpost"])
-async def post_ap_interface(interface: str):
-    ap.set_interface(interface)
-    return {'interface': interface}
-
-@app.post("/ap/wpa", tags=["accesspoint/hostpost"])
-async def post_ap_wpa(wpa: str):
-    ap.set_wpa(wpa)
-    return {'wpa': wpa}
-
-@app.post("/ap/wpa_pairwise", tags=["accesspoint/hostpost"])
-async def post_ap_wpa_pairwise(wpa_pairwise: str):
-    ap.set_wpa_pairwise(wpa_pairwise)
-    return {'wpa_pairwise': wpa_pairwise}
-
-@app.post("/ap/country_code", tags=["accesspoint/hostpost"])
-async def post_ap_country_code(country_code: str):
-    ap.set_country_code(country_code)
-    return {'country_code': country_code}
-
-@app.post("/ap/ignore_broadcast_ssid", tags=["accesspoint/hostpost"])
-async def post_ap_ignore_broadcast_ssid(ignore_broadcast_ssid: str):
-    ap.set_ignore_broadcast_ssid(ignore_broadcast_ssid)
-    return {'ignore_broadcast_ssid': ignore_broadcast_ssid}
+@app.post("/ap", tags=["accesspoint/hostpost"])
+async def post_ap(driver=None,
+                  ctrl_interface=None,
+                  ctrl_interface_group=None,
+                  auth_algs=None,
+                  wpa_key_mgmt=None,
+                  beacon_int=None,
+                  ssid=None,
+                  channel=None,
+                  hw_mode=None,
+                  ieee80211n=None,
+                  wpa_passphrase=None,
+                  interface=None,
+                  wpa=None,
+                  wpa_pairwise=None,
+                  country_code=None,
+                  ignore_broadcast_ssid=None,
+                  api_key: APIKey = Depends(auth.get_api_key)):
+    if driver != None:
+        ap.set_driver(driver)
+    if ctrl_interface != None:
+        ap.set_ctrl_interface(ctrl_interface)
+    if ctrl_interface_group !=None:
+        ap.set_ctrl_interface_group(ctrl_interface_group)
+    if auth_algs != None:
+        ap.set_auth_algs(auth_algs)
+    if wpa_key_mgmt != None:
+        ap.set_wpa_key_mgmt(wpa_key_mgmt)
+    if beacon_int != None:
+        ap.set_beacon_int(beacon_int)
+    if ssid != None:
+        ap.set_ssid(ssid)
+    if channel != None:
+        ap.set_channel(channel)
+    if hw_mode != None:
+        ap.set_hw_mode(hw_mode)
+    if ieee80211n != None:
+        ap.set_ieee80211n(ieee80211n)
+    if wpa_passphrase != None:
+        ap.set_wpa_passphrase(wpa_passphrase)
+    if interface != None:
+        ap.set_interface(interface)
+    if wpa != None:
+        ap.set_wpa(wpa)
+    if wpa_pairwise != None:
+        ap.set_wpa_pairwise(wpa_pairwise)
+    if country_code != None:
+        ap.set_country_code(country_code)
+    if ignore_broadcast_ssid != None:
+        ap.set_ignore_broadcast_ssid(ignore_broadcast_ssid)
+    
 
 @app.get("/clients/{wireless_interface}", tags=["Clients"])
 async def get_clients(wireless_interface):
@@ -177,7 +150,6 @@ async def get_domains():
     return{
 'domains': json.loads(dns.adblockdomains())
 }
-
 @app.get("/dns/hostnames", tags=["DNS"])
 async def get_hostnames():
     return{
