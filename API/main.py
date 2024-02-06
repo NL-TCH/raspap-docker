@@ -5,6 +5,7 @@ import json
 
 import modules.system as system
 import modules.ap as ap
+import modules.client as client
 import modules.dns as dns
 import modules.dhcp as dhcp
 import modules.ddns as ddns
@@ -152,6 +153,13 @@ async def post_ap_country_code(country_code: str):
 async def post_ap_ignore_broadcast_ssid(ignore_broadcast_ssid: str):
     ap.set_ignore_broadcast_ssid(ignore_broadcast_ssid)
     return {'ignore_broadcast_ssid': ignore_broadcast_ssid}
+
+@app.get("/clients/{wireless_interface}", tags=["Clients"])
+async def get_clients(wireless_interface):
+    return{
+'active_clients_amount': client.get_active_clients_amount(wireless_interface),
+'active_clients': json.loads(client.get_active_clients(wireless_interface))
+}
 
 @app.get("/dhcp", tags=["DHCP"])
 async def get_dhcp():
