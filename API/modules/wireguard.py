@@ -20,4 +20,7 @@ def client_config_active():
 
 def client_config_list(client_config):
     output = subprocess.run(f"cat /etc/wireguard/{client_config}", shell=True, capture_output=True, text=True).stdout.strip()
-    return output
+    return output.split('\n')
+
+#TODO: where is the logfile??
+#TODO: is service connected?

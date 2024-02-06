@@ -64,3 +64,5 @@ def interfaces():
             "MAC_address": mac_address
         }
     return json.dumps(interface_info, indent=2)
+
+#TODO: migrate to vnstat, to lose psutil dependency

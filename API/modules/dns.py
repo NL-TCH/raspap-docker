@@ -21,6 +21,9 @@ def adblockhostnames():
         hostnamelist.append(hostname.replace('0.0.0.0 ',''))
     return hostnamelist
 
+def upstream_nameserver():
+    return subprocess.run("awk '/nameserver/ {print $2}' /run/dnsmasq/resolv.conf", shell=True, capture_output=True, text=True).stdout.strip()
+
 def dnsmasq_logs():
     output = subprocess.run("cat /var/log/dnsmasq.log", shell=True, capture_output=True, text=True).stdout.strip()
     log_entries = []
@@ -33,4 +36,3 @@ def dnsmasq_logs():
             }
         log_entries.append(log_dict)
     return log_entries
-
