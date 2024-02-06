@@ -4,7 +4,7 @@ from fastapi import Security, HTTPException
 from starlette.status import HTTP_403_FORBIDDEN
 
 apikey=os.getenv('RASPAP_API_KEY')
-#if env not set, 
+#if env not set, set the api key to "insecure"
 if apikey == None:
     apikey = "insecure"
 
